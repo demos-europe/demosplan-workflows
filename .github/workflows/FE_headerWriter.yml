@@ -1,0 +1,56 @@
+on:
+  workflow_call:
+  inputs:
+    project_path:
+      description: 'root path of the project where files are stored'
+      required: true
+      type: string
+      default: '/home/runner/work/demosplan-core/demosplan-core'
+    ignore_path:
+      description: 'path to directories and files that schould be ignored'
+      type: string
+      required: false
+    gpg_user_name:
+      description: 'username for gpg signing'
+      required: true
+      type: string
+  secrets:
+    gpg_email:
+      required: true
+
+jobs:
+  cancel:
+    name: 'Cancel Previous Runs'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+        -   uses: styfle/cancel-workflow-action@0.11.0
+            with:
+                workflow_id: "FE_headerWriter"
+                access_token: ${{ secrets.GITHUB_TOKEN }}
+
+  FE_headerWriter:
+    runs-on: ubuntu-20.04
+    steps:
+
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Run headerWriter
+        run: |
+          python3 .github/headerWriter.py -p ${{ inputs.project_path }} -i  ${{ inputs.ignore_path }} -a -v
+        shell: bash
+
+      - name: Configure git
+        run: |
+          git config  user.email ${{ secrets.gpg_email }}
+          git config  user.name ${{ inputs.gpg_user_name }}
+      - name: Commit
+        run: |
+              git pull
+              if ! git diff --exit-code; then
+              git add .
+              git commit -m "style: Update license header"
+              git push
+              fi

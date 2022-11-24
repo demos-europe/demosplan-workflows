@@ -1,22 +1,22 @@
 on:
   workflow_call:
-  inputs:
-    project_path:
-      description: 'root path of the project where files are stored'
-      required: true
-      type: string
-      default: '/home/runner/work/demosplan-core/demosplan-core'
-    ignore_path:
-      description: 'path to directories and files that schould be ignored'
-      type: string
-      required: false
-    gpg_user_name:
-      description: 'username for gpg signing'
-      required: true
-      type: string
-  secrets:
-    gpg_email:
-      required: true
+    inputs:
+      project_path:
+        description: 'root path of the project where files are stored'
+        required: true
+        type: string
+        default: '/home/runner/work/demosplan-core/demosplan-core'
+      ignore_path:
+        description: 'path to directories and files that schould be ignored'
+        type: string
+        required: false
+      gpg_user_name:
+        description: 'username for gpg signing'
+        required: true
+        type: string
+    secrets:
+      gpg_email:
+        required: true
 
 jobs:
   cancel:

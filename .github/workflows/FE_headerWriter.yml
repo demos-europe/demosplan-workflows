@@ -17,8 +17,7 @@ on:
     secrets:
       GPG_EMAIL:
         required: true
-      DEMOSCI_PAT:
-        required: true
+
 
 jobs:
   cancel:
@@ -41,7 +40,7 @@ jobs:
 
       - name: download headerWriter
         run: |
-         wget --header "Authorization: Token ${{ secrets.DEMOSCI_PAT }}" https://raw.githubusercontent.com/demos-europe/demosplan-workflows/main/.github/headerWriter.py -O .github/headerWriter.py
+         wget https://raw.githubusercontent.com/demos-europe/demosplan-workflows/main/.github/headerWriter.py -O .github/headerWriter.py
 
       - name: Run headerWriter
         run: |

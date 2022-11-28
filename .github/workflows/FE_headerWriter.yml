@@ -15,7 +15,9 @@ on:
         required: true
         type: string
     secrets:
-      gpg_email:
+      GPG_EMAIL:
+        required: true
+      DEMOSCI_PAT:
         required: true
 
 jobs:
@@ -37,14 +39,22 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
+      - name: download headerWriter
+        run: |
+         wget --header "Authorization: Token ${{ secrets.DEMOSCI_PAT }}" https://raw.githubusercontent.com/demos-europe/demosplan-workflows/main/.github/headerWriter.py -O .github/headerWriter.py
+
       - name: Run headerWriter
         run: |
           python3 .github/headerWriter.py -p ${{ inputs.project_path }} -i  ${{ inputs.ignore_path }} -a -v
         shell: bash
 
+      - name: delete headerWriter
+        run: rm .github/headerWriter.py
+        shell: bash
+
       - name: Configure git
         run: |
-          git config  user.email ${{ secrets.gpg_email }}
+          git config  user.email ${{ secrets.GPG_EMAIL }}
           git config  user.name ${{ inputs.gpg_user_name }}
       - name: Commit
         run: |

@@ -1,11 +1,6 @@
 on:
   workflow_call:
     inputs:
-      project_path:
-        description: 'root path of the project where files are stored'
-        required: true
-        type: string
-        default: '/home/runner/work/demosplan-core/demosplan-core'
       ignore_path:
         description: 'path to directories and files that schould be ignored'
         type: string
@@ -44,7 +39,7 @@ jobs:
 
       - name: Run headerWriter
         run: |
-          python3 .github/headerWriter.py -p ${{ inputs.project_path }} -i  ${{ inputs.ignore_path }} -a -v
+          python3 .github/headerWriter.py -p  ${{ github.workspace }} -i  ${{ inputs.ignore_path }} -a -v
         shell: bash
 
       - name: delete headerWriter

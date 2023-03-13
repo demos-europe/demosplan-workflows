@@ -1,0 +1,28 @@
+on:
+  workflow_call:
+    inputs:
+      ADO_REPO:
+        description: 'repository url'
+        required: true
+        type: string
+    secrets:
+      ADO_URI:
+        required: true
+      ADO_TOKEN:
+        required: true
+
+env:
+  ADO_URI: ${{ secrets.ADO_URI }}
+  ADO_TOKEN: ${{ secrets.ADO_TOKEN }}
+  ADO_REPO: ${{ inputs.ADO_REPO }}
+
+jobs:
+  push_to_ado:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Push to ADO
+        run: |
+          git remote add ADO https://$(echo $ADO_TOKEN)@$ADO_URI/$ADO_REPO.git
+          git push ADO main

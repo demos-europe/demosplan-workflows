@@ -12,9 +12,8 @@ on:
         required: true
 
 env:
-  ADO_URI: ${{ secrets.ADO_URI }}
   ADO_TOKEN: ${{ secrets.ADO_TOKEN }}
-  ADO_REPO: ${{ inputs.ADO_REPO }}
+  ADO_REPO_URL: ${{ inputs.ADO_REPO }}
 
 jobs:
   push_to_ado:
@@ -24,5 +23,5 @@ jobs:
         uses: actions/checkout@v2
       - name: Push to ADO
         run: |
-          git remote add ADO https://$(echo $ADO_TOKEN)@$ADO_URI/$ADO_REPO.git
-          git push ADO main
+          git remote add ADO $ADO_REPO_URL
+          git -c http.extraheader="Authorization: Basic $ADO_TOKEN" push ADO main

@@ -1,13 +1,11 @@
 on:
   workflow_call:
     inputs:
-      ADO_REPO:
+      ADO_REPO_URL:
         description: 'repository url'
         required: true
         type: string
     secrets:
-      ADO_URI:
-        required: true
       ADO_TOKEN:
         required: true
 

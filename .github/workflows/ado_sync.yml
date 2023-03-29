@@ -17,8 +17,9 @@ jobs:
   push_to_ado:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
       - name: Push to ADO
         run: |
           git remote add ADO $ADO_REPO_URL

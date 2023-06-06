@@ -21,9 +21,6 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
-      - name: Fetch all branches
-        run: |
-          git fetch origin '+refs/heads/*:refs/heads/*'
       - name: Push to ADO
         run: |
           git remote add ADO $ADO_REPO_URL

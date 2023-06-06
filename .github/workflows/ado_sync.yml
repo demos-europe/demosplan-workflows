@@ -14,14 +14,15 @@ env:
   ADO_REPO_URL: ${{ inputs.ADO_REPO_URL }}
 
 jobs:
-  compare_with_ado:
+  check_ado_changes:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
-      - name: Compare with ADO
+      - name: Check ADO changes
         run: |
           git remote add ADO $ADO_REPO_URL
           git -c http.extraheader="Authorization: Basic $ADO_TOKEN" fetch ADO main
-          git diff ADO/main..HEAD
+          git diff HEAD..ADO/main
+

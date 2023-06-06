@@ -23,4 +23,5 @@ jobs:
       - name: Push to ADO
         run: |
           git remote add ADO $ADO_REPO_URL
+          git -c http.extraheader="Authorization: Basic $ADO_TOKEN" fetch ADO main
           git -c http.extraheader="Authorization: Basic $ADO_TOKEN" push ADO main

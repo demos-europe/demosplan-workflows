@@ -5,6 +5,10 @@ on:
         description: 'repository url'
         required: true
         type: string
+      BRANCH_NAME:
+        description: 'branch to push in ADO'
+        required: true
+        type: string
     secrets:
       ADO_TOKEN:
         required: true
@@ -12,6 +16,7 @@ on:
 env:
   ADO_TOKEN: ${{ secrets.ADO_TOKEN }}
   ADO_REPO_URL: ${{ inputs.ADO_REPO_URL }}
+  BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
 
 jobs:
   push_to_ado:
@@ -26,4 +31,4 @@ jobs:
           git remote add ADO $ADO_REPO_URL
           git -c http.extraheader="Authorization: Basic $ADO_TOKEN" fetch ADO
           git -c http.extraheader="Authorization: Basic $ADO_TOKEN" checkout -b temporary_branch
-          git -c http.extraheader="Authorization: Basic $ADO_TOKEN" push ADO temporary_branch:develop
+          git -c http.extraheader="Authorization: Basic $ADO_TOKEN" push ADO temporary_branch:${{ env.BRANCH_NAME }}

@@ -49,7 +49,7 @@ jobs:
             composer install --no-interaction
 
       - name: Get list of changed files
-        uses: jitterbit/get-changed-files@v1
+        uses: tj-actions/changed-files@v39
         id: files
 
       - name: download configs
@@ -57,10 +57,10 @@ jobs:
             wget https://raw.githubusercontent.com/demos-europe/demosplan-workflows/main/.github/php-cs-fixer/.php-cs-fixer-header.php -O .php-cs-fixer-header.php
 
       - name: Run php-cs-fixer
-        run: "vendor/bin/php-cs-fixer fix --config .php-cs-fixer.php ${{ steps.files.outputs.added_modified }}"
+        run: "vendor/bin/php-cs-fixer fix --config .php-cs-fixer.php ${{ steps.files.outputs.all_changed_files }}"
 
       - name: Run php-cs-fixer-header
-        run: "vendor/bin/php-cs-fixer fix --config .php-cs-fixer-header.php ${{ steps.files.outputs.added_modified }}"
+        run: "vendor/bin/php-cs-fixer fix --config .php-cs-fixer-header.php ${{ steps.files.outputs.all_changed_files }}"
 
       - name: delete headerWriter
         run: rm .php-cs-fixer-header.php

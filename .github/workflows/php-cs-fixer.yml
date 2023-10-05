@@ -8,6 +8,7 @@ on:
     secrets:
       GPG_EMAIL:
         required: true
+
 jobs:
   cancel:
     name: 'Cancel Previous Runs'
@@ -52,14 +53,22 @@ jobs:
         uses: tj-actions/changed-files@v39
         id: files
 
+      - name: Print Changed Files
+        run: |
+          echo "${{ steps.files.outputs.all_changed_files }}"
+          CHANGED_COUNT=$(echo "${{ steps.files.outputs.all_changed_files }}" | wc -w)
+          echo "Number of changed files: $CHANGED_COUNT"
+
       - name: download configs
         run: |
             wget https://raw.githubusercontent.com/demos-europe/demosplan-workflows/main/.github/php-cs-fixer/.php-cs-fixer-header.php -O .php-cs-fixer-header.php
 
       - name: Run php-cs-fixer
+        if: steps.files.outputs.all_changed_files_count > 0
         run: "vendor/bin/php-cs-fixer fix --config .php-cs-fixer.php ${{ steps.files.outputs.all_changed_files }}"
 
       - name: Run php-cs-fixer-header
+        if: steps.files.outputs.all_changed_files_count > 0
         run: "vendor/bin/php-cs-fixer fix --config .php-cs-fixer-header.php ${{ steps.files.outputs.all_changed_files }}"
 
       - name: delete headerWriter

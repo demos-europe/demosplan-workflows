@@ -29,6 +29,7 @@ jobs:
       - name: Push to ADO
         run: |
           git remote add ADO $ADO_REPO_URL
+          git config --global http.version HTTP/1.1
           git -c http.extraheader="Authorization: Basic $ADO_TOKEN" fetch ADO
           git -c http.extraheader="Authorization: Basic $ADO_TOKEN" checkout -b temporary_branch
           git -c http.extraheader="Authorization: Basic $ADO_TOKEN" push ADO temporary_branch:${{ env.BRANCH_NAME }}

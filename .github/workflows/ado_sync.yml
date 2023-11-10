@@ -28,6 +28,8 @@ jobs:
           fetch-depth: 0
       - name: Push to ADO
         run: |
+          git config http.postBuffer 524288000
+          git config --global http.version HTTP/2
           git remote add ADO $ADO_REPO_URL
           git -c http.extraheader="Authorization: Basic $ADO_TOKEN" fetch ADO
           git -c http.extraheader="Authorization: Basic $ADO_TOKEN" checkout -b temporary_branch

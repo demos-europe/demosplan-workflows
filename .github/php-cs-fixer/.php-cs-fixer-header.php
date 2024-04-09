@@ -31,6 +31,11 @@ $config
                 'comment_type' => 'PHPDoc',
                 'location'     => 'after_declare_strict',
             ],
+            'phpdoc_to_comment' => [
+                'ignored_tags'  => [
+                    'var',
+                ]
+            ],
         ]
     )
     ->setCacheFile('.php-cs-fixer-header.cache')

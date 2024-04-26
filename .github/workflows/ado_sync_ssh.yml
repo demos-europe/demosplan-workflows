@@ -11,9 +11,6 @@ on:
         description: 'Branch to push in ADO'
         required: true
         type: string
-    secrets:
-      ADO_TOKEN:
-        required: true
 
 env:
   ADO_REPO_URL: ${{ inputs.ADO_REPO_URL }}

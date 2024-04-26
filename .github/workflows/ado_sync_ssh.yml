@@ -42,3 +42,7 @@ jobs:
           git fetch ADO
           git checkout -b temporary_branch
           git push ADO temporary_branch:${{ env.BRANCH_NAME }}
+
+      - name: Delete ssh key
+        run: |
+          rm -rf ~/.ssh/id_rsa_ado

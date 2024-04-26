@@ -29,10 +29,8 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.ADO_SSH_KEY }}" | tr -d '\r' | ssh-add -
-          mkdir -p ~/.ssh
-          touch ~/.ssh/config
-          touch ~/.ssh/known_hosts
-          chmod -R 400 ~/.ssh
+          echo "" >>  ~/.ssh/id_rsa_ado
+          chmod 600 ~/.ssh/id_rsa_ado
           ssh-keyscan -t rsa www.dev.diplanung.de >> ~/.ssh/known_hosts
 
       - name: Configure Git SSH command

@@ -30,6 +30,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.ADO_SSH_KEY }}" > ~/.ssh/id_rsa_ado
           chmod 600 ~/.ssh/id_rsa_ado
+          ssh-keyscan -t rsa ${{ inputs.ADO_REPO_URL }} >> ~/.ssh/known_hosts
 
       - name: Configure Git SSH command
         run: |

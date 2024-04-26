@@ -1,0 +1,33 @@
+on:
+  workflow_call:
+    inputs:
+      ADO_REPO_URL:
+        description: 'repository url'
+        required: true
+        type: string
+      BRANCH_NAME:
+        description: 'branch to push in ADO'
+        required: true
+        type: string
+    secrets:
+      ADO_TOKEN:
+        required: true
+
+env:
+  ADO_REPO_URL: ${{ inputs.ADO_REPO_URL }}
+  BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
+
+jobs:
+  push_to_ado:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Push to ADO
+        run: |
+          git remote add ADO $ADO_REPO_URL
+          git fetch ADO
+          git checkout -b temporary_branch
+          git push ADO temporary_branch:${{ env.BRANCH_NAME }}

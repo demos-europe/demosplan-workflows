@@ -27,7 +27,7 @@ jobs:
 
       - name: Setup SSH key
         run: |
-          mkdir -p ~/ssh
+          mkdir -p ~/ssh_ado
           echo "${{ secrets.ADO_SSH_KEY }}" | tr -d '\r' > ~/ssh_ado/id_rsa_ado
           echo "" >>  ~/ssh_ado/id_rsa_ado
           chmod 600 ~/ssh_ado/id_rsa_ado

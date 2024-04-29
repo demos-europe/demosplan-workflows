@@ -27,16 +27,16 @@ jobs:
 
       - name: Setup SSH key and known_hosts
         run: |
-          mkdir -p $HOME/ssh_ado
-          echo "${{ secrets.ADO_SSH_KEY }}" | tr -d '\r' > $HOME/ssh_ado/id_rsa_ado
-          chmod 600 $HOME/ssh_ado/id_rsa_ado
-          ssh-keyscan -t rsa www.dev.diplanung.de >> $HOME/ssh_ado/known_hosts
+          mkdir -p /home/runner/ssh_ado
+          echo "${{ secrets.ADO_SSH_KEY }}" | tr -d '\r' > /home/runner/ssh_ado/id_rsa_ado
+          chmod 600 /home/runner/ssh_ado/id_rsa_ado
+          ssh-keyscan -t rsa www.dev.diplanung.de >> /home/runner/ssh_ado/known_hosts
 
       - name: Configure Git SSH command
         run: |
-          git config core.sshCommand "ssh -i $HOME/ssh_ado/id_rsa_ado -o UserKnownHostsFile=$HOME/ssh_ado/known_hosts -o StrictHostKeyChecking=no"
+          git config core.sshCommand "ssh -i /home/runner/ssh_ado/id_rsa_ado -o UserKnownHostsFile=/home/runner/ssh_ado/known_hosts -o StrictHostKeyChecking=no"
           # Test SSH setup
-          ssh -Tv -i $HOME/ssh_ado/id_rsa_ado shumyachkin@www.dev.diplanung.de
+          ssh -Tv -i /home/runner/ssh_ado/id_rsa_ado shumyachkin@www.dev.diplanung.de
 
       - name: Push to ADO
         run: |
@@ -47,4 +47,4 @@ jobs:
 
       - name: Delete ssh key
         run: |
-          rm -rf $HOME/ssh_ado/id_rsa_ado
+          rm -rf /home/runner/ssh_ado/id_rsa_ado

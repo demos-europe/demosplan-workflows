@@ -29,9 +29,7 @@ jobs:
         run: |
           mkdir -p ~/ssh_ado
           echo "${{ secrets.ADO_SSH_KEY }}" | tr -d '\r' > ~/ssh_ado/id_rsa_ado
-          echo "" >>  ~/ssh_ado/id_rsa_ado
           chmod 600 ~/ssh_ado/id_rsa_ado
-          cat ~/ssh_ado/id_rsa_ado
           ssh-keyscan -t rsa dev.diplanung.de >> ~/ssh_ado/known_hosts
 
       - name: Configure Git SSH command
@@ -43,8 +41,8 @@ jobs:
           git remote add ADO $ADO_REPO_URL
           git fetch ADO
           git checkout -b temporary_branch
-          git push ADO temporary_branch:${{ env.BRANCH_NAME }}
+          git push ADO temporary_branch:$BRANCH_NAME
 
       - name: Delete ssh key
         run: |
-          rm -rf ~/.ssh/id_rsa_ado
+          rm -rf ~/ssh_ado/id_rsa_ado

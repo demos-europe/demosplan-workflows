@@ -31,11 +31,12 @@ jobs:
           echo "${{ secrets.ADO_SSH_KEY }}" | tr -d '\r' > ~/ssh_ado/id_rsa_ado
           chmod 600 ~/ssh_ado/id_rsa_ado
           ssh-keyscan -t rsa dev.diplanung.de >> ~/ssh_ado/known_hosts
-          ssh -Tv -i ~/ssh_ado/id_rsa_ado shumyachkin@www.dev.diplanung.de
+
 
       - name: Configure Git SSH command
         run: |
           git config core.sshCommand "ssh -i ~/ssh_ado/id_rsa_ado -o UserKnownHostsFile=~/ssh_ado/known_hosts -o StrictHostKeyChecking=no"
+          ssh -Tv -i ~/ssh_ado/id_rsa_ado shumyachkin@www.dev.diplanung.de
 
       - name: Push to ADO
         run: |

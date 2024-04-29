@@ -31,6 +31,7 @@ jobs:
           echo "${{ secrets.ADO_SSH_KEY }}" | tr -d '\r' > ~/ssh_ado/id_rsa_ado
           chmod 600 ~/ssh_ado/id_rsa_ado
           ssh-keyscan -t rsa dev.diplanung.de >> ~/ssh_ado/known_hosts
+          ssh -Tv -i ~/ssh_ado/id_rsa_ado ssh://www.dev.diplanung.de:22/DefaultCollection/EfA%20DiPlanung/_git/diplanbeteiligung
 
       - name: Configure Git SSH command
         run: |

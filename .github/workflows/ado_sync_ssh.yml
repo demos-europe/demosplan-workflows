@@ -36,7 +36,7 @@ jobs:
 
       - name: Configure Git SSH command
         run: |
-          git config core.sshCommand "ssh -i ~/ssh_ado/id_rsa_ado"
+          git config core.sshCommand "ssh -i ~/ssh_ado/id_rsa_ado -o UserKnownHostsFile=~/ssh_ado/known_hosts"
 
       - name: Push to ADO
         run: |

@@ -28,8 +28,9 @@ jobs:
       - name: Setup SSH key and known_hosts
         run: |
           mkdir -p /home/runner/ssh_ado
-          echo "${{ secrets.ADO_SSH_KEY }}"| base64 --decode  > /home/runner/ssh_ado/id_rsa_ado
+          echo "${{ secrets.ADO_SSH_KEY }}" > /home/runner/ssh_ado/id_rsa_ado
           chmod 600 /home/runner/ssh_ado/id_rsa_ado
+          cat /home/runner/ssh_ado/id_rsa_ado
           ssh-keyscan -t rsa www.dev.diplanung.de > /home/runner/ssh_ado/known_hosts
           cat /home/runner/ssh_ado/known_hosts  # For debugging: show that it's correctly populated
 

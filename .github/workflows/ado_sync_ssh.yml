@@ -28,7 +28,7 @@ jobs:
       - name: Setup SSH key and known_hosts
         run: |
           mkdir -p /home/runner/ssh_ado
-          echo "${{ secrets.ADO_SSH_KEY }}"  > /home/runner/ssh_ado/id_rsa_ado
+          echo "${{ secrets.ADO_SSH_KEY }}"
           chmod 700 /home/runner/ssh_ado/id_rsa_ado
           ls -la cat /home/runner/ssh_ado/
           cat /home/runner/ssh_ado/id_rsa_ado

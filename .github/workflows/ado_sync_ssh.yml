@@ -35,11 +35,6 @@ jobs:
           chmod 700 /home/runner/ssh_ado/id_rsa_ado
           ls -la /home/runner/ssh_ado/
           ssh-keyscan -t rsa www.dev.diplanung.de > /home/runner/ssh_ado/known_hosts
-          cat /home/runner/ssh_ado/known_hosts  # For debugging: show that it's correctly populated
-
-      #- name: Test SSH setup directly with full command
-      #  run: |
-      #    ssh -Tv -i /home/runner/ssh_ado/id_rsa_ado -o UserKnownHostsFile=/home/runner/ssh_ado/known_hosts -o StrictHostKeyChecking=no shumyachkin@www.dev.diplanung.de
 
       - name: Configure Git SSH command
         run: |

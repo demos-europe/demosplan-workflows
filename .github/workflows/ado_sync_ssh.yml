@@ -32,7 +32,7 @@ jobs:
           mkdir -p /home/runner/ssh_ado
           echo $ADO_SSH_KEY | tr -d '\r' > /home/runner/ssh_ado/id_rsa_ado
           chmod 700 /home/runner/ssh_ado/id_rsa_ado
-          ls -la cat /home/runner/ssh_ado/
+          ls -la /home/runner/ssh_ado/
           ssh-keyscan -t rsa www.dev.diplanung.de > /home/runner/ssh_ado/known_hosts
           cat /home/runner/ssh_ado/known_hosts  # For debugging: show that it's correctly populated
 

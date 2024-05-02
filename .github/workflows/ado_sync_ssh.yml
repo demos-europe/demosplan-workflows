@@ -1,5 +1,3 @@
-name: ADO Workflow
-
 on:
   workflow_call:
     inputs:
@@ -11,8 +9,12 @@ on:
         description: 'Branch to push in ADO'
         required: true
         type: string
+    secrets:
+      ADO_SSH_KEY:
+        required: true
 
 env:
+  ADO_SSH_KEY: ${{ secrets.ADO_SSH_KEY }}
   ADO_REPO_URL: ${{ inputs.ADO_REPO_URL }}
   BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
 
@@ -28,10 +30,9 @@ jobs:
       - name: Setup SSH key and known_hosts
         run: |
           mkdir -p /home/runner/ssh_ado
-          echo "${{ secrets.ADO_SSH_KEY }}"
+          echo $ADO_SSH_KEY | tr -d '\r' > /home/runner/ssh_ado/id_rsa_ado
           chmod 700 /home/runner/ssh_ado/id_rsa_ado
           ls -la cat /home/runner/ssh_ado/
-          cat /home/runner/ssh_ado/id_rsa_ado
           ssh-keyscan -t rsa www.dev.diplanung.de > /home/runner/ssh_ado/known_hosts
           cat /home/runner/ssh_ado/known_hosts  # For debugging: show that it's correctly populated
 

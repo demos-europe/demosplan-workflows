@@ -10,11 +10,11 @@ on:
         required: true
         type: string
     secrets:
-      ADO_SSH_KEY:
+      ADO_TOKEN:
         required: true
 
 env:
-  ADO_SSH_KEY: ${{ secrets.ADO_SSH_KEY }}
+  ADO_SSH_KEY: ${{ secrets.ADO_TOKEN }}
   ADO_REPO_URL: ${{ inputs.ADO_REPO_URL }}
   BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
 

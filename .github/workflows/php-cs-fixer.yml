@@ -50,7 +50,7 @@ jobs:
             composer install --no-interaction
 
       - name: Get list of changed files
-        uses: tj-actions/changed-files@v39
+        uses: tj-actions/changed-files@v46
         id: files
 
       - name: Print Changed Files

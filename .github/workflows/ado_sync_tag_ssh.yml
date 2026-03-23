@@ -1,0 +1,47 @@
+on:
+  workflow_call:
+    inputs:
+      ADO_REPO_URL:
+        description: 'Repository URL'
+        required: true
+        type: string
+      TAG_NAME:
+        description: 'Tag to push to ADO'
+        required: true
+        type: string
+    secrets:
+      ADO_TOKEN:
+        required: true
+
+env:
+  ADO_SSH_KEY: ${{ secrets.ADO_TOKEN }}
+  ADO_REPO_URL: ${{ inputs.ADO_REPO_URL }}
+  TAG_NAME: ${{ inputs.TAG_NAME }}
+
+jobs:
+  push_tag_to_ado:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup SSH key and known_hosts
+        run: |
+          mkdir -p /home/runner/ssh_ado
+          echo "$ADO_SSH_KEY" | base64 --decode > /home/runner/ssh_ado/id_rsa_ado
+          chmod 700 /home/runner/ssh_ado/id_rsa_ado
+          ssh-keyscan -t rsa www.dev.diplanung.de > /home/runner/ssh_ado/known_hosts
+
+      - name: Configure Git SSH command
+        run: |
+          git config core.sshCommand "ssh -i /home/runner/ssh_ado/id_rsa_ado -o UserKnownHostsFile=/home/runner/ssh_ado/known_hosts -o StrictHostKeyChecking=no"
+
+      - name: Push tag to ADO
+        run: |
+          git remote add ADO $ADO_REPO_URL
+          git push ADO refs/tags/$TAG_NAME
+
+      - name: Delete ssh key
+        run: |
+          rm -rf /home/runner/ssh_ado/id_rsa_ado

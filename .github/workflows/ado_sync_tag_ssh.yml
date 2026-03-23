@@ -5,8 +5,8 @@ on:
         description: 'Repository URL'
         required: true
         type: string
-      BRANCH_NAME:
-        description: 'Branch to push in ADO'
+      TAG_NAME:
+        description: 'Tag to push to ADO'
         required: true
         type: string
     secrets:
@@ -16,36 +16,31 @@ on:
 env:
   ADO_SSH_KEY: ${{ secrets.ADO_TOKEN }}
   ADO_REPO_URL: ${{ inputs.ADO_REPO_URL }}
-  BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
+  TAG_NAME: ${{ inputs.TAG_NAME }}
 
 jobs:
-  push_to_ado:
+  push_tag_to_ado:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          ref: ${{ github.head_ref }}
           fetch-depth: 0
 
       - name: Setup SSH key and known_hosts
         run: |
           mkdir -p /home/runner/ssh_ado
-          echo $ADO_SSH_KEY
           echo "$ADO_SSH_KEY" | base64 --decode > /home/runner/ssh_ado/id_rsa_ado
           chmod 700 /home/runner/ssh_ado/id_rsa_ado
-          ls -la /home/runner/ssh_ado/
           ssh-keyscan -t rsa www.dev.diplanung.de > /home/runner/ssh_ado/known_hosts
 
       - name: Configure Git SSH command
         run: |
           git config core.sshCommand "ssh -i /home/runner/ssh_ado/id_rsa_ado -o UserKnownHostsFile=/home/runner/ssh_ado/known_hosts -o StrictHostKeyChecking=no"
 
-      - name: Push to ADO
+      - name: Push tag to ADO
         run: |
           git remote add ADO $ADO_REPO_URL
-          git fetch ADO
-          git checkout -b temporary_branch
-          git push ADO temporary_branch:$BRANCH_NAME
+          git push ADO refs/tags/$TAG_NAME
 
       - name: Delete ssh key
         run: |
